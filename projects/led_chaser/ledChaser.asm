@@ -223,13 +223,15 @@ _CY	=	0x00d7
 ; internal ram data
 ;--------------------------------------------------------
 	.area DSEG    (DATA)
+_main_ledPins_10000_4:
+	.ds 8
 _blink_PARM_2:
 	.ds 1
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
 	.area	OSEG    (OVR,DATA)
-_delay_i_10000_6:
+_delay_i_10000_8:
 	.ds 4
 ;--------------------------------------------------------
 ; Stack segment in internal ram
@@ -313,7 +315,10 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	ledChaser.c:17: void main(void)
+;i                         Allocated to registers r7 
+;ledPins                   Allocated with name '_main_ledPins_10000_4'
+;------------------------------------------------------------
+;	ledChaser.c:60: void main(void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
@@ -326,53 +331,131 @@ _main:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-;	ledChaser.c:19: P1=0x00;	
+;	ledChaser.c:63: uint8_t ledPins[8]={PIN_1,PIN_2,PIN_3,PIN_4,PIN_5,PIN_6,PIN_7,PIN_8};
+	mov	_main_ledPins_10000_4,#0x01
+	mov	(_main_ledPins_10000_4 + 0x0001),#0x02
+	mov	(_main_ledPins_10000_4 + 0x0002),#0x04
+	mov	(_main_ledPins_10000_4 + 0x0003),#0x08
+	mov	(_main_ledPins_10000_4 + 0x0004),#0x10
+	mov	(_main_ledPins_10000_4 + 0x0005),#0x20
+	mov	(_main_ledPins_10000_4 + 0x0006),#0x40
+	mov	(_main_ledPins_10000_4 + 0x0007),#0x80
+;	ledChaser.c:64: P1=0x00;	
 	mov	_P1,#0x00
-;	ledChaser.c:20: P2=0x00;
+;	ledChaser.c:65: P2=0x00;
 	mov	_P2,#0x00
-;	ledChaser.c:21: P0=0xff;
+;	ledChaser.c:66: P0=0xff;
 	mov	_P0,#0xff
-;	ledChaser.c:22: P3=0x00;
+;	ledChaser.c:67: P3=0x00;
 	mov	_P3,#0x00
-;	ledChaser.c:23: P2_0=1;
+;	ledChaser.c:68: P2_0=1;                           //this way we can access port bit.
 ;	assignBit
 	setb	_P2_0
-;	ledChaser.c:24: delay(20000);
+;	ledChaser.c:69: delay(20000);
 	mov	dptr,#0x4e20
 	clr	a
 	mov	b,a
 	lcall	_delay
-;	ledChaser.c:25: while(1)
-00102$:
-;	ledChaser.c:27: blink(1,P1_PIN_8);
+;	ledChaser.c:73: for(i=0;i<8;i++)
+00109$:
+	mov	r7,#0x00
+00105$:
+;	ledChaser.c:76: P2 |= 1<<i;
+	mov	b,r7
+	inc	b
+	mov	a,#0x01
+	sjmp	00129$
+00128$:
+	add	a,acc
+00129$:
+	djnz	b,00128$
+	mov	r6,a
+	orl	_P2,a
+;	ledChaser.c:77: delay(1000);
+	mov	dptr,#0x03e8
+	clr	a
+	mov	b,a
+	push	ar7
+	push	ar6
+	lcall	_delay
+	pop	ar6
+;	ledChaser.c:78: P2 &= ~(1<<i);
+	mov	a,r6
+	cpl	a
+	anl	_P2,a
+;	ledChaser.c:79: delay(1000);
+	mov	dptr,#0x03e8
+	clr	a
+	mov	b,a
+	lcall	_delay
+	pop	ar7
+;	ledChaser.c:81: blink(PORT_0,ledPins[i]);
+	mov	a,r7
+	add	a, #_main_ledPins_10000_4
+	mov	r1,a
+	mov	_blink_PARM_2,@r1
+	mov	dpl, #0x00
+	push	ar7
+	lcall	_blink
+	pop	ar7
+;	ledChaser.c:73: for(i=0;i<8;i++)
+	inc	r7
+	cjne	r7,#0x08,00130$
+00130$:
+	jc	00105$
+;	ledChaser.c:85: blink(1,P1_PIN_2);
+	mov	_blink_PARM_2,#0x02
+	mov	dpl, #0x01
+	lcall	_blink
+;	ledChaser.c:87: blink(1,P1_PIN_3);
+	mov	_blink_PARM_2,#0x04
+	mov	dpl, #0x01
+	lcall	_blink
+;	ledChaser.c:89: blink(1,P1_PIN_4);
+	mov	_blink_PARM_2,#0x08
+	mov	dpl, #0x01
+	lcall	_blink
+;	ledChaser.c:91: blink(1,P1_PIN_5);
+	mov	_blink_PARM_2,#0x10
+	mov	dpl, #0x01
+	lcall	_blink
+;	ledChaser.c:93: blink(1,P1_PIN_6);
+	mov	_blink_PARM_2,#0x20
+	mov	dpl, #0x01
+	lcall	_blink
+;	ledChaser.c:95: blink(1,P1_PIN_7);
+	mov	_blink_PARM_2,#0x40
+	mov	dpl, #0x01
+	lcall	_blink
+;	ledChaser.c:97: blink(1,P1_PIN_8);
 	mov	_blink_PARM_2,#0x80
 	mov	dpl, #0x01
 	lcall	_blink
-;	ledChaser.c:30: }
-	sjmp	00102$
+;	ledChaser.c:100: }
+	ljmp	00109$
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'delay'
 ;------------------------------------------------------------
-;i                         Allocated with name '_delay_i_10000_6'
+;i                         Allocated with name '_delay_i_10000_8'
 ;j                         Allocated to registers r3 
 ;k                         Allocated to registers r0 r1 r2 r7 
 ;------------------------------------------------------------
-;	ledChaser.c:31: void delay(uint32_t i)
+;	ledChaser.c:101: void delay(uint32_t i)
 ;	-----------------------------------------
 ;	 function delay
 ;	-----------------------------------------
 _delay:
-	mov	_delay_i_10000_6,dpl
-	mov	(_delay_i_10000_6 + 1),dph
-	mov	(_delay_i_10000_6 + 2),b
-	mov	(_delay_i_10000_6 + 3),a
-;	ledChaser.c:33: for(uint32_t j=0;j<10;j++)
+	mov	_delay_i_10000_8,dpl
+	mov	(_delay_i_10000_8 + 1),dph
+	mov	(_delay_i_10000_8 + 2),b
+	mov	(_delay_i_10000_8 + 3),a
+;	ledChaser.c:103: for(uint32_t j=0;j<10;j++)
 	mov	r3,#0x00
 00107$:
 	cjne	r3,#0x0a,00137$
 00137$:
 	jnc	00109$
-;	ledChaser.c:35: for(uint32_t k=0;k<i;k++)
+;	ledChaser.c:105: for(uint32_t k=0;k<i;k++)
 	mov	r0,#0x00
 	mov	r1,#0x00
 	mov	r2,#0x00
@@ -380,17 +463,17 @@ _delay:
 00104$:
 	clr	c
 	mov	a,r0
-	subb	a,_delay_i_10000_6
+	subb	a,_delay_i_10000_8
 	mov	a,r1
-	subb	a,(_delay_i_10000_6 + 1)
+	subb	a,(_delay_i_10000_8 + 1)
 	mov	a,r2
-	subb	a,(_delay_i_10000_6 + 2)
+	subb	a,(_delay_i_10000_8 + 2)
 	mov	a,r7
-	subb	a,(_delay_i_10000_6 + 3)
+	subb	a,(_delay_i_10000_8 + 3)
 	jnc	00108$
-;	ledChaser.c:37: __asm__("nop");
+;	ledChaser.c:107: __asm__("nop");
 	nop
-;	ledChaser.c:35: for(uint32_t k=0;k<i;k++)
+;	ledChaser.c:105: for(uint32_t k=0;k<i;k++)
 	inc	r0
 	cjne	r0,#0x00,00140$
 	inc	r1
@@ -401,11 +484,11 @@ _delay:
 00140$:
 	sjmp	00104$
 00108$:
-;	ledChaser.c:33: for(uint32_t j=0;j<10;j++)
+;	ledChaser.c:103: for(uint32_t j=0;j<10;j++)
 	inc	r3
 	sjmp	00107$
 00109$:
-;	ledChaser.c:40: }
+;	ledChaser.c:110: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'blink'
@@ -413,72 +496,111 @@ _delay:
 ;pin                       Allocated with name '_blink_PARM_2'
 ;port                      Allocated to registers r7 
 ;------------------------------------------------------------
-;	ledChaser.c:42: void blink(unsigned char port, unsigned char pin)
+;	ledChaser.c:112: void blink(unsigned char port, unsigned char pin)
 ;	-----------------------------------------
 ;	 function blink
 ;	-----------------------------------------
 _blink:
-;	ledChaser.c:44: switch (port)
-	mov	a,dpl
-	mov	r7,a
-	add	a,#0xff - 0x03
-	jc	00106$
+	mov	r7, dpl
+;	ledChaser.c:114: switch (port)
+	clr	c
+	mov	a,#0x03
+	subb	a,r7
+	clr	a
+	rlc	a
+	mov	r6,a
+	jnz	00106$
 	mov	a,r7
 	add	a,r7
-;	ledChaser.c:46: case 0:
-	mov	dptr,#00116$
+;	ledChaser.c:116: case 0:
+	mov	dptr,#00128$
 	jmp	@a+dptr
-00116$:
+00128$:
 	sjmp	00101$
 	sjmp	00102$
 	sjmp	00103$
 	sjmp	00104$
 00101$:
-;	ledChaser.c:47: P0 ^= (pin); // Toggle pin on Port 0
+;	ledChaser.c:117: P0 ^= (pin); // Toggle pin on Port 0
 	mov	a,_blink_PARM_2
 	xrl	_P0,a
-;	ledChaser.c:48: break;
-;	ledChaser.c:49: case 1:
+;	ledChaser.c:118: break;
+;	ledChaser.c:119: case 1:
 	sjmp	00106$
 00102$:
-;	ledChaser.c:50: P1 ^= (pin); // Toggle pin on Port 1
+;	ledChaser.c:120: P1 ^= (pin); // Toggle pin on Port 1
 	mov	a,_blink_PARM_2
 	xrl	_P1,a
-;	ledChaser.c:51: break;
-;	ledChaser.c:52: case 2:
+;	ledChaser.c:121: break;
+;	ledChaser.c:122: case 2:
 	sjmp	00106$
 00103$:
-;	ledChaser.c:53: P2 ^= (1<<pin); // Toggle pin on Port 2
-	mov	b,_blink_PARM_2
-	inc	b
-	mov	a,#0x01
-	sjmp	00118$
-00117$:
-	add	a,acc
-00118$:
-	djnz	b,00117$
+;	ledChaser.c:123: P2 ^= (pin); // Toggle pin on Port 2
+	mov	a,_blink_PARM_2
 	xrl	_P2,a
-;	ledChaser.c:54: break;
-;	ledChaser.c:55: case 3:
+;	ledChaser.c:124: break;
+;	ledChaser.c:125: case 3:
 	sjmp	00106$
 00104$:
-;	ledChaser.c:56: P3 ^= (1<<pin); // Toggle pin on Port 3
-	mov	b,_blink_PARM_2
-	inc	b
-	mov	a,#0x01
-	sjmp	00120$
-00119$:
-	add	a,acc
-00120$:
-	djnz	b,00119$
+;	ledChaser.c:126: P3 ^= (pin); // Toggle pin on Port 3
+	mov	a,_blink_PARM_2
 	xrl	_P3,a
-;	ledChaser.c:61: }
+;	ledChaser.c:131: }
 00106$:
-;	ledChaser.c:62: delay(1000); // 1 second delay
+;	ledChaser.c:132: delay(1000); // 1 second delay
 	mov	dptr,#0x03e8
 	clr	a
 	mov	b,a
-;	ledChaser.c:63: }
+	push	ar7
+	push	ar6
+	lcall	_delay
+	pop	ar6
+	pop	ar7
+;	ledChaser.c:133: switch (port)
+	mov	a,r6
+	jnz	00112$
+	mov	a,r7
+	add	a,r7
+;	ledChaser.c:135: case 0:
+	mov	dptr,#00130$
+	jmp	@a+dptr
+00130$:
+	sjmp	00107$
+	sjmp	00108$
+	sjmp	00109$
+	sjmp	00110$
+00107$:
+;	ledChaser.c:136: P0 ^= (pin); // Toggle pin on Port 0
+	mov	a,_blink_PARM_2
+	xrl	_P0,a
+;	ledChaser.c:137: break;
+;	ledChaser.c:138: case 1:
+	sjmp	00112$
+00108$:
+;	ledChaser.c:139: P1 ^= (pin); // Toggle pin on Port 1
+	mov	a,_blink_PARM_2
+	xrl	_P1,a
+;	ledChaser.c:140: break;
+;	ledChaser.c:141: case 2:
+	sjmp	00112$
+00109$:
+;	ledChaser.c:142: P2 ^= (pin); // Toggle pin on Port 2
+	mov	a,_blink_PARM_2
+	xrl	_P2,a
+;	ledChaser.c:143: break;
+;	ledChaser.c:144: case 3:
+	sjmp	00112$
+00110$:
+;	ledChaser.c:145: P3 ^= (pin); // Toggle pin on Port 3
+	mov	a,_blink_PARM_2
+	xrl	_P3,a
+;	ledChaser.c:150: }
+00112$:
+;	ledChaser.c:151: delay(1000);
+	mov	dptr,#0x03e8
+	clr	a
+	mov	b,a
+;	ledChaser.c:152: }
 	ljmp	_delay
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

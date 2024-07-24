@@ -223,264 +223,386 @@
                                     223 ; internal ram data
                                     224 ;--------------------------------------------------------
                                     225 	.area DSEG    (DATA)
-      000000                        226 _blink_PARM_2:
-      000000                        227 	.ds 1
-                                    228 ;--------------------------------------------------------
-                                    229 ; overlayable items in internal ram
+      000000                        226 _main_ledPins_10000_4:
+      000000                        227 	.ds 8
+      000008                        228 _blink_PARM_2:
+      000008                        229 	.ds 1
                                     230 ;--------------------------------------------------------
-                                    231 	.area	OSEG    (OVR,DATA)
-      000000                        232 _delay_i_10000_6:
-      000000                        233 	.ds 4
-                                    234 ;--------------------------------------------------------
-                                    235 ; Stack segment in internal ram
+                                    231 ; overlayable items in internal ram
+                                    232 ;--------------------------------------------------------
+                                    233 	.area	OSEG    (OVR,DATA)
+      000000                        234 _delay_i_10000_8:
+      000000                        235 	.ds 4
                                     236 ;--------------------------------------------------------
-                                    237 	.area SSEG
-      000000                        238 __start__stack:
-      000000                        239 	.ds	1
-                                    240 
-                                    241 ;--------------------------------------------------------
-                                    242 ; indirectly addressable internal ram data
+                                    237 ; Stack segment in internal ram
+                                    238 ;--------------------------------------------------------
+                                    239 	.area SSEG
+      000000                        240 __start__stack:
+      000000                        241 	.ds	1
+                                    242 
                                     243 ;--------------------------------------------------------
-                                    244 	.area ISEG    (DATA)
+                                    244 ; indirectly addressable internal ram data
                                     245 ;--------------------------------------------------------
-                                    246 ; absolute internal ram data
+                                    246 	.area ISEG    (DATA)
                                     247 ;--------------------------------------------------------
-                                    248 	.area IABS    (ABS,DATA)
-                                    249 	.area IABS    (ABS,DATA)
-                                    250 ;--------------------------------------------------------
-                                    251 ; bit data
+                                    248 ; absolute internal ram data
+                                    249 ;--------------------------------------------------------
+                                    250 	.area IABS    (ABS,DATA)
+                                    251 	.area IABS    (ABS,DATA)
                                     252 ;--------------------------------------------------------
-                                    253 	.area BSEG    (BIT)
+                                    253 ; bit data
                                     254 ;--------------------------------------------------------
-                                    255 ; paged external ram data
+                                    255 	.area BSEG    (BIT)
                                     256 ;--------------------------------------------------------
-                                    257 	.area PSEG    (PAG,XDATA)
+                                    257 ; paged external ram data
                                     258 ;--------------------------------------------------------
-                                    259 ; uninitialized external ram data
+                                    259 	.area PSEG    (PAG,XDATA)
                                     260 ;--------------------------------------------------------
-                                    261 	.area XSEG    (XDATA)
+                                    261 ; uninitialized external ram data
                                     262 ;--------------------------------------------------------
-                                    263 ; absolute external ram data
+                                    263 	.area XSEG    (XDATA)
                                     264 ;--------------------------------------------------------
-                                    265 	.area XABS    (ABS,XDATA)
+                                    265 ; absolute external ram data
                                     266 ;--------------------------------------------------------
-                                    267 ; initialized external ram data
+                                    267 	.area XABS    (ABS,XDATA)
                                     268 ;--------------------------------------------------------
-                                    269 	.area XISEG   (XDATA)
-                                    270 	.area HOME    (CODE)
-                                    271 	.area GSINIT0 (CODE)
-                                    272 	.area GSINIT1 (CODE)
-                                    273 	.area GSINIT2 (CODE)
-                                    274 	.area GSINIT3 (CODE)
-                                    275 	.area GSINIT4 (CODE)
-                                    276 	.area GSINIT5 (CODE)
-                                    277 	.area GSINIT  (CODE)
-                                    278 	.area GSFINAL (CODE)
-                                    279 	.area CSEG    (CODE)
-                                    280 ;--------------------------------------------------------
-                                    281 ; interrupt vector
+                                    269 ; initialized external ram data
+                                    270 ;--------------------------------------------------------
+                                    271 	.area XISEG   (XDATA)
+                                    272 	.area HOME    (CODE)
+                                    273 	.area GSINIT0 (CODE)
+                                    274 	.area GSINIT1 (CODE)
+                                    275 	.area GSINIT2 (CODE)
+                                    276 	.area GSINIT3 (CODE)
+                                    277 	.area GSINIT4 (CODE)
+                                    278 	.area GSINIT5 (CODE)
+                                    279 	.area GSINIT  (CODE)
+                                    280 	.area GSFINAL (CODE)
+                                    281 	.area CSEG    (CODE)
                                     282 ;--------------------------------------------------------
-                                    283 	.area HOME    (CODE)
-      000000                        284 __interrupt_vect:
-      000000 02r00r00         [24]  285 	ljmp	__sdcc_gsinit_startup
-                                    286 ;--------------------------------------------------------
-                                    287 ; global & static initialisations
+                                    283 ; interrupt vector
+                                    284 ;--------------------------------------------------------
+                                    285 	.area HOME    (CODE)
+      000000                        286 __interrupt_vect:
+      000000 02r00r00         [24]  287 	ljmp	__sdcc_gsinit_startup
                                     288 ;--------------------------------------------------------
-                                    289 	.area HOME    (CODE)
-                                    290 	.area GSINIT  (CODE)
-                                    291 	.area GSFINAL (CODE)
+                                    289 ; global & static initialisations
+                                    290 ;--------------------------------------------------------
+                                    291 	.area HOME    (CODE)
                                     292 	.area GSINIT  (CODE)
-                                    293 	.globl __sdcc_gsinit_startup
-                                    294 	.globl __sdcc_program_startup
-                                    295 	.globl __start__stack
-                                    296 	.globl __mcs51_genXINIT
-                                    297 	.globl __mcs51_genXRAMCLEAR
-                                    298 	.globl __mcs51_genRAMCLEAR
-                                    299 	.area GSFINAL (CODE)
-      000000 02r00r03         [24]  300 	ljmp	__sdcc_program_startup
-                                    301 ;--------------------------------------------------------
-                                    302 ; Home
+                                    293 	.area GSFINAL (CODE)
+                                    294 	.area GSINIT  (CODE)
+                                    295 	.globl __sdcc_gsinit_startup
+                                    296 	.globl __sdcc_program_startup
+                                    297 	.globl __start__stack
+                                    298 	.globl __mcs51_genXINIT
+                                    299 	.globl __mcs51_genXRAMCLEAR
+                                    300 	.globl __mcs51_genRAMCLEAR
+                                    301 	.area GSFINAL (CODE)
+      000000 02r00r03         [24]  302 	ljmp	__sdcc_program_startup
                                     303 ;--------------------------------------------------------
-                                    304 	.area HOME    (CODE)
-                                    305 	.area HOME    (CODE)
-      000003                        306 __sdcc_program_startup:
-      000003 02r00r00         [24]  307 	ljmp	_main
-                                    308 ;	return from main will return to caller
-                                    309 ;--------------------------------------------------------
-                                    310 ; code
+                                    304 ; Home
+                                    305 ;--------------------------------------------------------
+                                    306 	.area HOME    (CODE)
+                                    307 	.area HOME    (CODE)
+      000003                        308 __sdcc_program_startup:
+      000003 02r00r00         [24]  309 	ljmp	_main
+                                    310 ;	return from main will return to caller
                                     311 ;--------------------------------------------------------
-                                    312 	.area CSEG    (CODE)
-                                    313 ;------------------------------------------------------------
-                                    314 ;Allocation info for local variables in function 'main'
+                                    312 ; code
+                                    313 ;--------------------------------------------------------
+                                    314 	.area CSEG    (CODE)
                                     315 ;------------------------------------------------------------
-                                    316 ;	ledChaser.c:17: void main(void)
-                                    317 ;	-----------------------------------------
-                                    318 ;	 function main
-                                    319 ;	-----------------------------------------
-      000000                        320 _main:
-                           000007   321 	ar7 = 0x07
-                           000006   322 	ar6 = 0x06
-                           000005   323 	ar5 = 0x05
-                           000004   324 	ar4 = 0x04
-                           000003   325 	ar3 = 0x03
-                           000002   326 	ar2 = 0x02
-                           000001   327 	ar1 = 0x01
-                           000000   328 	ar0 = 0x00
-                                    329 ;	ledChaser.c:19: P1=0x00;	
-      000000 75 90 00         [24]  330 	mov	_P1,#0x00
-                                    331 ;	ledChaser.c:20: P2=0x00;
-      000003 75 A0 00         [24]  332 	mov	_P2,#0x00
-                                    333 ;	ledChaser.c:21: P0=0xff;
-      000006 75 80 FF         [24]  334 	mov	_P0,#0xff
-                                    335 ;	ledChaser.c:22: P3=0x00;
-      000009 75 B0 00         [24]  336 	mov	_P3,#0x00
-                                    337 ;	ledChaser.c:23: P2_0=1;
-                                    338 ;	assignBit
-      00000C D2 A0            [12]  339 	setb	_P2_0
-                                    340 ;	ledChaser.c:24: delay(20000);
-      00000E 90 4E 20         [24]  341 	mov	dptr,#0x4e20
-      000011 E4               [12]  342 	clr	a
-      000012 F5 F0            [12]  343 	mov	b,a
-      000014 12r00r22         [24]  344 	lcall	_delay
-                                    345 ;	ledChaser.c:25: while(1)
-      000017                        346 00102$:
-                                    347 ;	ledChaser.c:27: blink(1,P1_PIN_8);
-      000017 75*00 80         [24]  348 	mov	_blink_PARM_2,#0x80
-      00001A 75 82 01         [24]  349 	mov	dpl, #0x01
-      00001D 12r00r5F         [24]  350 	lcall	_blink
-                                    351 ;	ledChaser.c:30: }
-      000020 80 F5            [24]  352 	sjmp	00102$
-                                    353 ;------------------------------------------------------------
-                                    354 ;Allocation info for local variables in function 'delay'
-                                    355 ;------------------------------------------------------------
-                                    356 ;i                         Allocated with name '_delay_i_10000_6'
-                                    357 ;j                         Allocated to registers r3 
-                                    358 ;k                         Allocated to registers r0 r1 r2 r7 
-                                    359 ;------------------------------------------------------------
-                                    360 ;	ledChaser.c:31: void delay(uint32_t i)
-                                    361 ;	-----------------------------------------
-                                    362 ;	 function delay
-                                    363 ;	-----------------------------------------
-      000022                        364 _delay:
-      000022 85 82*00         [24]  365 	mov	_delay_i_10000_6,dpl
-      000025 85 83*01         [24]  366 	mov	(_delay_i_10000_6 + 1),dph
-      000028 85 F0*02         [24]  367 	mov	(_delay_i_10000_6 + 2),b
-      00002B F5*03            [12]  368 	mov	(_delay_i_10000_6 + 3),a
-                                    369 ;	ledChaser.c:33: for(uint32_t j=0;j<10;j++)
-      00002D 7B 00            [12]  370 	mov	r3,#0x00
-      00002F                        371 00107$:
-      00002F BB 0A 00         [24]  372 	cjne	r3,#0x0a,00137$
-      000032                        373 00137$:
-      000032 50 2A            [24]  374 	jnc	00109$
-                                    375 ;	ledChaser.c:35: for(uint32_t k=0;k<i;k++)
-      000034 78 00            [12]  376 	mov	r0,#0x00
-      000036 79 00            [12]  377 	mov	r1,#0x00
-      000038 7A 00            [12]  378 	mov	r2,#0x00
-      00003A 7F 00            [12]  379 	mov	r7,#0x00
-      00003C                        380 00104$:
-      00003C C3               [12]  381 	clr	c
-      00003D E8               [12]  382 	mov	a,r0
-      00003E 95*00            [12]  383 	subb	a,_delay_i_10000_6
-      000040 E9               [12]  384 	mov	a,r1
-      000041 95*01            [12]  385 	subb	a,(_delay_i_10000_6 + 1)
-      000043 EA               [12]  386 	mov	a,r2
-      000044 95*02            [12]  387 	subb	a,(_delay_i_10000_6 + 2)
-      000046 EF               [12]  388 	mov	a,r7
-      000047 95*03            [12]  389 	subb	a,(_delay_i_10000_6 + 3)
-      000049 50 10            [24]  390 	jnc	00108$
-                                    391 ;	ledChaser.c:37: __asm__("nop");
-      00004B 00               [12]  392 	nop
-                                    393 ;	ledChaser.c:35: for(uint32_t k=0;k<i;k++)
-      00004C 08               [12]  394 	inc	r0
-      00004D B8 00 09         [24]  395 	cjne	r0,#0x00,00140$
-      000050 09               [12]  396 	inc	r1
-      000051 B9 00 05         [24]  397 	cjne	r1,#0x00,00140$
-      000054 0A               [12]  398 	inc	r2
-      000055 BA 00 E4         [24]  399 	cjne	r2,#0x00,00104$
-      000058 0F               [12]  400 	inc	r7
-      000059                        401 00140$:
-      000059 80 E1            [24]  402 	sjmp	00104$
-      00005B                        403 00108$:
-                                    404 ;	ledChaser.c:33: for(uint32_t j=0;j<10;j++)
-      00005B 0B               [12]  405 	inc	r3
-      00005C 80 D1            [24]  406 	sjmp	00107$
-      00005E                        407 00109$:
-                                    408 ;	ledChaser.c:40: }
-      00005E 22               [24]  409 	ret
-                                    410 ;------------------------------------------------------------
-                                    411 ;Allocation info for local variables in function 'blink'
-                                    412 ;------------------------------------------------------------
-                                    413 ;pin                       Allocated with name '_blink_PARM_2'
-                                    414 ;port                      Allocated to registers r7 
-                                    415 ;------------------------------------------------------------
-                                    416 ;	ledChaser.c:42: void blink(unsigned char port, unsigned char pin)
-                                    417 ;	-----------------------------------------
-                                    418 ;	 function blink
-                                    419 ;	-----------------------------------------
-      00005F                        420 _blink:
-                                    421 ;	ledChaser.c:44: switch (port)
-      00005F E5 82            [12]  422 	mov	a,dpl
-      000061 FF               [12]  423 	mov	r7,a
-      000062 24 FC            [12]  424 	add	a,#0xff - 0x03
-      000064 40 3C            [24]  425 	jc	00106$
-      000066 EF               [12]  426 	mov	a,r7
-      000067 2F               [12]  427 	add	a,r7
-                                    428 ;	ledChaser.c:46: case 0:
-      000068 90r00r6C         [24]  429 	mov	dptr,#00116$
-      00006B 73               [24]  430 	jmp	@a+dptr
-      00006C                        431 00116$:
-      00006C 80 06            [24]  432 	sjmp	00101$
-      00006E 80 0A            [24]  433 	sjmp	00102$
-      000070 80 0E            [24]  434 	sjmp	00103$
-      000072 80 1E            [24]  435 	sjmp	00104$
-      000074                        436 00101$:
-                                    437 ;	ledChaser.c:47: P0 ^= (pin); // Toggle pin on Port 0
-      000074 E5*00            [12]  438 	mov	a,_blink_PARM_2
-      000076 62 80            [12]  439 	xrl	_P0,a
-                                    440 ;	ledChaser.c:48: break;
-                                    441 ;	ledChaser.c:49: case 1:
-      000078 80 28            [24]  442 	sjmp	00106$
-      00007A                        443 00102$:
-                                    444 ;	ledChaser.c:50: P1 ^= (pin); // Toggle pin on Port 1
-      00007A E5*00            [12]  445 	mov	a,_blink_PARM_2
-      00007C 62 90            [12]  446 	xrl	_P1,a
-                                    447 ;	ledChaser.c:51: break;
-                                    448 ;	ledChaser.c:52: case 2:
-      00007E 80 22            [24]  449 	sjmp	00106$
-      000080                        450 00103$:
-                                    451 ;	ledChaser.c:53: P2 ^= (1<<pin); // Toggle pin on Port 2
-      000080 85*00 F0         [24]  452 	mov	b,_blink_PARM_2
-      000083 05 F0            [12]  453 	inc	b
-      000085 74 01            [12]  454 	mov	a,#0x01
-      000087 80 02            [24]  455 	sjmp	00118$
-      000089                        456 00117$:
-      000089 25 E0            [12]  457 	add	a,acc
-      00008B                        458 00118$:
-      00008B D5 F0 FB         [24]  459 	djnz	b,00117$
-      00008E 62 A0            [12]  460 	xrl	_P2,a
-                                    461 ;	ledChaser.c:54: break;
-                                    462 ;	ledChaser.c:55: case 3:
-      000090 80 10            [24]  463 	sjmp	00106$
-      000092                        464 00104$:
-                                    465 ;	ledChaser.c:56: P3 ^= (1<<pin); // Toggle pin on Port 3
-      000092 85*00 F0         [24]  466 	mov	b,_blink_PARM_2
-      000095 05 F0            [12]  467 	inc	b
-      000097 74 01            [12]  468 	mov	a,#0x01
-      000099 80 02            [24]  469 	sjmp	00120$
-      00009B                        470 00119$:
-      00009B 25 E0            [12]  471 	add	a,acc
-      00009D                        472 00120$:
-      00009D D5 F0 FB         [24]  473 	djnz	b,00119$
-      0000A0 62 B0            [12]  474 	xrl	_P3,a
-                                    475 ;	ledChaser.c:61: }
-      0000A2                        476 00106$:
-                                    477 ;	ledChaser.c:62: delay(1000); // 1 second delay
-      0000A2 90 03 E8         [24]  478 	mov	dptr,#0x03e8
-      0000A5 E4               [12]  479 	clr	a
-      0000A6 F5 F0            [12]  480 	mov	b,a
-                                    481 ;	ledChaser.c:63: }
-      0000A8 02r00r22         [24]  482 	ljmp	_delay
-                                    483 	.area CSEG    (CODE)
-                                    484 	.area CONST   (CODE)
-                                    485 	.area XINIT   (CODE)
-                                    486 	.area CABS    (ABS,CODE)
+                                    316 ;Allocation info for local variables in function 'main'
+                                    317 ;------------------------------------------------------------
+                                    318 ;i                         Allocated to registers r7 
+                                    319 ;ledPins                   Allocated with name '_main_ledPins_10000_4'
+                                    320 ;------------------------------------------------------------
+                                    321 ;	ledChaser.c:60: void main(void)
+                                    322 ;	-----------------------------------------
+                                    323 ;	 function main
+                                    324 ;	-----------------------------------------
+      000000                        325 _main:
+                           000007   326 	ar7 = 0x07
+                           000006   327 	ar6 = 0x06
+                           000005   328 	ar5 = 0x05
+                           000004   329 	ar4 = 0x04
+                           000003   330 	ar3 = 0x03
+                           000002   331 	ar2 = 0x02
+                           000001   332 	ar1 = 0x01
+                           000000   333 	ar0 = 0x00
+                                    334 ;	ledChaser.c:63: uint8_t ledPins[8]={PIN_1,PIN_2,PIN_3,PIN_4,PIN_5,PIN_6,PIN_7,PIN_8};
+      000000 75*00 01         [24]  335 	mov	_main_ledPins_10000_4,#0x01
+      000003 75*01 02         [24]  336 	mov	(_main_ledPins_10000_4 + 0x0001),#0x02
+      000006 75*02 04         [24]  337 	mov	(_main_ledPins_10000_4 + 0x0002),#0x04
+      000009 75*03 08         [24]  338 	mov	(_main_ledPins_10000_4 + 0x0003),#0x08
+      00000C 75*04 10         [24]  339 	mov	(_main_ledPins_10000_4 + 0x0004),#0x10
+      00000F 75*05 20         [24]  340 	mov	(_main_ledPins_10000_4 + 0x0005),#0x20
+      000012 75*06 40         [24]  341 	mov	(_main_ledPins_10000_4 + 0x0006),#0x40
+      000015 75*07 80         [24]  342 	mov	(_main_ledPins_10000_4 + 0x0007),#0x80
+                                    343 ;	ledChaser.c:64: P1=0x00;	
+      000018 75 90 00         [24]  344 	mov	_P1,#0x00
+                                    345 ;	ledChaser.c:65: P2=0x00;
+      00001B 75 A0 00         [24]  346 	mov	_P2,#0x00
+                                    347 ;	ledChaser.c:66: P0=0xff;
+      00001E 75 80 FF         [24]  348 	mov	_P0,#0xff
+                                    349 ;	ledChaser.c:67: P3=0x00;
+      000021 75 B0 00         [24]  350 	mov	_P3,#0x00
+                                    351 ;	ledChaser.c:68: P2_0=1;                           //this way we can access port bit.
+                                    352 ;	assignBit
+      000024 D2 A0            [12]  353 	setb	_P2_0
+                                    354 ;	ledChaser.c:69: delay(20000);
+      000026 90 4E 20         [24]  355 	mov	dptr,#0x4e20
+      000029 E4               [12]  356 	clr	a
+      00002A F5 F0            [12]  357 	mov	b,a
+      00002C 12r00rB7         [24]  358 	lcall	_delay
+                                    359 ;	ledChaser.c:73: for(i=0;i<8;i++)
+      00002F                        360 00109$:
+      00002F 7F 00            [12]  361 	mov	r7,#0x00
+      000031                        362 00105$:
+                                    363 ;	ledChaser.c:76: P2 |= 1<<i;
+      000031 8F F0            [24]  364 	mov	b,r7
+      000033 05 F0            [12]  365 	inc	b
+      000035 74 01            [12]  366 	mov	a,#0x01
+      000037 80 02            [24]  367 	sjmp	00129$
+      000039                        368 00128$:
+      000039 25 E0            [12]  369 	add	a,acc
+      00003B                        370 00129$:
+      00003B D5 F0 FB         [24]  371 	djnz	b,00128$
+      00003E FE               [12]  372 	mov	r6,a
+      00003F 42 A0            [12]  373 	orl	_P2,a
+                                    374 ;	ledChaser.c:77: delay(1000);
+      000041 90 03 E8         [24]  375 	mov	dptr,#0x03e8
+      000044 E4               [12]  376 	clr	a
+      000045 F5 F0            [12]  377 	mov	b,a
+      000047 C0 07            [24]  378 	push	ar7
+      000049 C0 06            [24]  379 	push	ar6
+      00004B 12r00rB7         [24]  380 	lcall	_delay
+      00004E D0 06            [24]  381 	pop	ar6
+                                    382 ;	ledChaser.c:78: P2 &= ~(1<<i);
+      000050 EE               [12]  383 	mov	a,r6
+      000051 F4               [12]  384 	cpl	a
+      000052 52 A0            [12]  385 	anl	_P2,a
+                                    386 ;	ledChaser.c:79: delay(1000);
+      000054 90 03 E8         [24]  387 	mov	dptr,#0x03e8
+      000057 E4               [12]  388 	clr	a
+      000058 F5 F0            [12]  389 	mov	b,a
+      00005A 12r00rB7         [24]  390 	lcall	_delay
+      00005D D0 07            [24]  391 	pop	ar7
+                                    392 ;	ledChaser.c:81: blink(PORT_0,ledPins[i]);
+      00005F EF               [12]  393 	mov	a,r7
+      000060 24r00            [12]  394 	add	a, #_main_ledPins_10000_4
+      000062 F9               [12]  395 	mov	r1,a
+      000063 87*08            [24]  396 	mov	_blink_PARM_2,@r1
+      000065 75 82 00         [24]  397 	mov	dpl, #0x00
+      000068 C0 07            [24]  398 	push	ar7
+      00006A 12r00rF4         [24]  399 	lcall	_blink
+      00006D D0 07            [24]  400 	pop	ar7
+                                    401 ;	ledChaser.c:73: for(i=0;i<8;i++)
+      00006F 0F               [12]  402 	inc	r7
+      000070 BF 08 00         [24]  403 	cjne	r7,#0x08,00130$
+      000073                        404 00130$:
+      000073 40 BC            [24]  405 	jc	00105$
+                                    406 ;	ledChaser.c:85: blink(1,P1_PIN_2);
+      000075 75*08 02         [24]  407 	mov	_blink_PARM_2,#0x02
+      000078 75 82 01         [24]  408 	mov	dpl, #0x01
+      00007B 12r00rF4         [24]  409 	lcall	_blink
+                                    410 ;	ledChaser.c:87: blink(1,P1_PIN_3);
+      00007E 75*08 04         [24]  411 	mov	_blink_PARM_2,#0x04
+      000081 75 82 01         [24]  412 	mov	dpl, #0x01
+      000084 12r00rF4         [24]  413 	lcall	_blink
+                                    414 ;	ledChaser.c:89: blink(1,P1_PIN_4);
+      000087 75*08 08         [24]  415 	mov	_blink_PARM_2,#0x08
+      00008A 75 82 01         [24]  416 	mov	dpl, #0x01
+      00008D 12r00rF4         [24]  417 	lcall	_blink
+                                    418 ;	ledChaser.c:91: blink(1,P1_PIN_5);
+      000090 75*08 10         [24]  419 	mov	_blink_PARM_2,#0x10
+      000093 75 82 01         [24]  420 	mov	dpl, #0x01
+      000096 12r00rF4         [24]  421 	lcall	_blink
+                                    422 ;	ledChaser.c:93: blink(1,P1_PIN_6);
+      000099 75*08 20         [24]  423 	mov	_blink_PARM_2,#0x20
+      00009C 75 82 01         [24]  424 	mov	dpl, #0x01
+      00009F 12r00rF4         [24]  425 	lcall	_blink
+                                    426 ;	ledChaser.c:95: blink(1,P1_PIN_7);
+      0000A2 75*08 40         [24]  427 	mov	_blink_PARM_2,#0x40
+      0000A5 75 82 01         [24]  428 	mov	dpl, #0x01
+      0000A8 12r00rF4         [24]  429 	lcall	_blink
+                                    430 ;	ledChaser.c:97: blink(1,P1_PIN_8);
+      0000AB 75*08 80         [24]  431 	mov	_blink_PARM_2,#0x80
+      0000AE 75 82 01         [24]  432 	mov	dpl, #0x01
+      0000B1 12r00rF4         [24]  433 	lcall	_blink
+                                    434 ;	ledChaser.c:100: }
+      0000B4 02r00r2F         [24]  435 	ljmp	00109$
+                                    436 ;------------------------------------------------------------
+                                    437 ;Allocation info for local variables in function 'delay'
+                                    438 ;------------------------------------------------------------
+                                    439 ;i                         Allocated with name '_delay_i_10000_8'
+                                    440 ;j                         Allocated to registers r3 
+                                    441 ;k                         Allocated to registers r0 r1 r2 r7 
+                                    442 ;------------------------------------------------------------
+                                    443 ;	ledChaser.c:101: void delay(uint32_t i)
+                                    444 ;	-----------------------------------------
+                                    445 ;	 function delay
+                                    446 ;	-----------------------------------------
+      0000B7                        447 _delay:
+      0000B7 85 82*00         [24]  448 	mov	_delay_i_10000_8,dpl
+      0000BA 85 83*01         [24]  449 	mov	(_delay_i_10000_8 + 1),dph
+      0000BD 85 F0*02         [24]  450 	mov	(_delay_i_10000_8 + 2),b
+      0000C0 F5*03            [12]  451 	mov	(_delay_i_10000_8 + 3),a
+                                    452 ;	ledChaser.c:103: for(uint32_t j=0;j<10;j++)
+      0000C2 7B 00            [12]  453 	mov	r3,#0x00
+      0000C4                        454 00107$:
+      0000C4 BB 0A 00         [24]  455 	cjne	r3,#0x0a,00137$
+      0000C7                        456 00137$:
+      0000C7 50 2A            [24]  457 	jnc	00109$
+                                    458 ;	ledChaser.c:105: for(uint32_t k=0;k<i;k++)
+      0000C9 78 00            [12]  459 	mov	r0,#0x00
+      0000CB 79 00            [12]  460 	mov	r1,#0x00
+      0000CD 7A 00            [12]  461 	mov	r2,#0x00
+      0000CF 7F 00            [12]  462 	mov	r7,#0x00
+      0000D1                        463 00104$:
+      0000D1 C3               [12]  464 	clr	c
+      0000D2 E8               [12]  465 	mov	a,r0
+      0000D3 95*00            [12]  466 	subb	a,_delay_i_10000_8
+      0000D5 E9               [12]  467 	mov	a,r1
+      0000D6 95*01            [12]  468 	subb	a,(_delay_i_10000_8 + 1)
+      0000D8 EA               [12]  469 	mov	a,r2
+      0000D9 95*02            [12]  470 	subb	a,(_delay_i_10000_8 + 2)
+      0000DB EF               [12]  471 	mov	a,r7
+      0000DC 95*03            [12]  472 	subb	a,(_delay_i_10000_8 + 3)
+      0000DE 50 10            [24]  473 	jnc	00108$
+                                    474 ;	ledChaser.c:107: __asm__("nop");
+      0000E0 00               [12]  475 	nop
+                                    476 ;	ledChaser.c:105: for(uint32_t k=0;k<i;k++)
+      0000E1 08               [12]  477 	inc	r0
+      0000E2 B8 00 09         [24]  478 	cjne	r0,#0x00,00140$
+      0000E5 09               [12]  479 	inc	r1
+      0000E6 B9 00 05         [24]  480 	cjne	r1,#0x00,00140$
+      0000E9 0A               [12]  481 	inc	r2
+      0000EA BA 00 E4         [24]  482 	cjne	r2,#0x00,00104$
+      0000ED 0F               [12]  483 	inc	r7
+      0000EE                        484 00140$:
+      0000EE 80 E1            [24]  485 	sjmp	00104$
+      0000F0                        486 00108$:
+                                    487 ;	ledChaser.c:103: for(uint32_t j=0;j<10;j++)
+      0000F0 0B               [12]  488 	inc	r3
+      0000F1 80 D1            [24]  489 	sjmp	00107$
+      0000F3                        490 00109$:
+                                    491 ;	ledChaser.c:110: }
+      0000F3 22               [24]  492 	ret
+                                    493 ;------------------------------------------------------------
+                                    494 ;Allocation info for local variables in function 'blink'
+                                    495 ;------------------------------------------------------------
+                                    496 ;pin                       Allocated with name '_blink_PARM_2'
+                                    497 ;port                      Allocated to registers r7 
+                                    498 ;------------------------------------------------------------
+                                    499 ;	ledChaser.c:112: void blink(unsigned char port, unsigned char pin)
+                                    500 ;	-----------------------------------------
+                                    501 ;	 function blink
+                                    502 ;	-----------------------------------------
+      0000F4                        503 _blink:
+      0000F4 AF 82            [24]  504 	mov	r7, dpl
+                                    505 ;	ledChaser.c:114: switch (port)
+      0000F6 C3               [12]  506 	clr	c
+      0000F7 74 03            [12]  507 	mov	a,#0x03
+      0000F9 9F               [12]  508 	subb	a,r7
+      0000FA E4               [12]  509 	clr	a
+      0000FB 33               [12]  510 	rlc	a
+      0000FC FE               [12]  511 	mov	r6,a
+      0000FD 70 24            [24]  512 	jnz	00106$
+      0000FF EF               [12]  513 	mov	a,r7
+      000100 2F               [12]  514 	add	a,r7
+                                    515 ;	ledChaser.c:116: case 0:
+      000101 90r01r05         [24]  516 	mov	dptr,#00128$
+      000104 73               [24]  517 	jmp	@a+dptr
+      000105                        518 00128$:
+      000105 80 06            [24]  519 	sjmp	00101$
+      000107 80 0A            [24]  520 	sjmp	00102$
+      000109 80 0E            [24]  521 	sjmp	00103$
+      00010B 80 12            [24]  522 	sjmp	00104$
+      00010D                        523 00101$:
+                                    524 ;	ledChaser.c:117: P0 ^= (pin); // Toggle pin on Port 0
+      00010D E5*08            [12]  525 	mov	a,_blink_PARM_2
+      00010F 62 80            [12]  526 	xrl	_P0,a
+                                    527 ;	ledChaser.c:118: break;
+                                    528 ;	ledChaser.c:119: case 1:
+      000111 80 10            [24]  529 	sjmp	00106$
+      000113                        530 00102$:
+                                    531 ;	ledChaser.c:120: P1 ^= (pin); // Toggle pin on Port 1
+      000113 E5*08            [12]  532 	mov	a,_blink_PARM_2
+      000115 62 90            [12]  533 	xrl	_P1,a
+                                    534 ;	ledChaser.c:121: break;
+                                    535 ;	ledChaser.c:122: case 2:
+      000117 80 0A            [24]  536 	sjmp	00106$
+      000119                        537 00103$:
+                                    538 ;	ledChaser.c:123: P2 ^= (pin); // Toggle pin on Port 2
+      000119 E5*08            [12]  539 	mov	a,_blink_PARM_2
+      00011B 62 A0            [12]  540 	xrl	_P2,a
+                                    541 ;	ledChaser.c:124: break;
+                                    542 ;	ledChaser.c:125: case 3:
+      00011D 80 04            [24]  543 	sjmp	00106$
+      00011F                        544 00104$:
+                                    545 ;	ledChaser.c:126: P3 ^= (pin); // Toggle pin on Port 3
+      00011F E5*08            [12]  546 	mov	a,_blink_PARM_2
+      000121 62 B0            [12]  547 	xrl	_P3,a
+                                    548 ;	ledChaser.c:131: }
+      000123                        549 00106$:
+                                    550 ;	ledChaser.c:132: delay(1000); // 1 second delay
+      000123 90 03 E8         [24]  551 	mov	dptr,#0x03e8
+      000126 E4               [12]  552 	clr	a
+      000127 F5 F0            [12]  553 	mov	b,a
+      000129 C0 07            [24]  554 	push	ar7
+      00012B C0 06            [24]  555 	push	ar6
+      00012D 12r00rB7         [24]  556 	lcall	_delay
+      000130 D0 06            [24]  557 	pop	ar6
+      000132 D0 07            [24]  558 	pop	ar7
+                                    559 ;	ledChaser.c:133: switch (port)
+      000134 EE               [12]  560 	mov	a,r6
+      000135 70 24            [24]  561 	jnz	00112$
+      000137 EF               [12]  562 	mov	a,r7
+      000138 2F               [12]  563 	add	a,r7
+                                    564 ;	ledChaser.c:135: case 0:
+      000139 90r01r3D         [24]  565 	mov	dptr,#00130$
+      00013C 73               [24]  566 	jmp	@a+dptr
+      00013D                        567 00130$:
+      00013D 80 06            [24]  568 	sjmp	00107$
+      00013F 80 0A            [24]  569 	sjmp	00108$
+      000141 80 0E            [24]  570 	sjmp	00109$
+      000143 80 12            [24]  571 	sjmp	00110$
+      000145                        572 00107$:
+                                    573 ;	ledChaser.c:136: P0 ^= (pin); // Toggle pin on Port 0
+      000145 E5*08            [12]  574 	mov	a,_blink_PARM_2
+      000147 62 80            [12]  575 	xrl	_P0,a
+                                    576 ;	ledChaser.c:137: break;
+                                    577 ;	ledChaser.c:138: case 1:
+      000149 80 10            [24]  578 	sjmp	00112$
+      00014B                        579 00108$:
+                                    580 ;	ledChaser.c:139: P1 ^= (pin); // Toggle pin on Port 1
+      00014B E5*08            [12]  581 	mov	a,_blink_PARM_2
+      00014D 62 90            [12]  582 	xrl	_P1,a
+                                    583 ;	ledChaser.c:140: break;
+                                    584 ;	ledChaser.c:141: case 2:
+      00014F 80 0A            [24]  585 	sjmp	00112$
+      000151                        586 00109$:
+                                    587 ;	ledChaser.c:142: P2 ^= (pin); // Toggle pin on Port 2
+      000151 E5*08            [12]  588 	mov	a,_blink_PARM_2
+      000153 62 A0            [12]  589 	xrl	_P2,a
+                                    590 ;	ledChaser.c:143: break;
+                                    591 ;	ledChaser.c:144: case 3:
+      000155 80 04            [24]  592 	sjmp	00112$
+      000157                        593 00110$:
+                                    594 ;	ledChaser.c:145: P3 ^= (pin); // Toggle pin on Port 3
+      000157 E5*08            [12]  595 	mov	a,_blink_PARM_2
+      000159 62 B0            [12]  596 	xrl	_P3,a
+                                    597 ;	ledChaser.c:150: }
+      00015B                        598 00112$:
+                                    599 ;	ledChaser.c:151: delay(1000);
+      00015B 90 03 E8         [24]  600 	mov	dptr,#0x03e8
+      00015E E4               [12]  601 	clr	a
+      00015F F5 F0            [12]  602 	mov	b,a
+                                    603 ;	ledChaser.c:152: }
+      000161 02r00rB7         [24]  604 	ljmp	_delay
+                                    605 	.area CSEG    (CODE)
+                                    606 	.area CONST   (CODE)
+                                    607 	.area XINIT   (CODE)
+                                    608 	.area CABS    (ABS,CODE)

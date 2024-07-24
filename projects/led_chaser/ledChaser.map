@@ -52,11 +52,11 @@ C:   00000008  l_REG_BANK_0
 C:   00000008  s_REG_BANK_1                    
 C:   00000009  s_GSINIT1                       
 C:   00000009  s_GSINIT2                       
-C:   00000009  s_OSEG                          
 C:   0000000A  l_GSINIT2                       
-C:   0000000D  s_SSEG                          
 C:   00000010  s_REG_BANK_2                    
+C:   00000011  s_OSEG                          
 C:   00000013  s_GSINIT3                       
+C:   00000015  s_SSEG                          
 ASxxxx Linker V03.00/V05.40 + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
@@ -78,11 +78,11 @@ C:   0000005F  s_GSINIT
 C:   0000005F  s_GSINIT5                       
 C:   00000062  s_CSEG                          
 C:   00000080  l_DSEG                          
-C:   000000AF  l_CSEG                          
-C:   000000F3  l_SSEG                          
+C:   000000EB  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   00000111  s_CONST                         
-C:   00000111  s_XINIT                         
+C:   00000168  l_CSEG                          
+C:   000001CA  s_CONST                         
+C:   000001CA  s_XINIT                         
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -219,14 +219,14 @@ DSEG                                00000000    00000080 =         128. bytes (R
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000008  _blink_PARM_2                      ledChaser
+     00000010  _blink_PARM_2                      ledChaser
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 7.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-OSEG                                00000009    00000004 =           4. bytes (REL,OVR)
+OSEG                                00000011    00000004 =           4. bytes (REL,OVR)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -235,11 +235,11 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-SSEG                                0000000D    000000F3 =         243. bytes (REL,OVR)
+SSEG                                00000015    000000EB =         235. bytes (REL,OVR)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     0000000D  __start__stack                     ledChaser
+     00000015  __start__stack                     ledChaser
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 9.
 Hexadecimal  [32-Bits]
@@ -309,14 +309,14 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                00000062    000000AF =         175. bytes (REL,CON,CODE)
+CSEG                                00000062    00000168 =         360. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   00000062  _main                              ledChaser
-C:   00000084  _delay                             ledChaser
-C:   000000C1  _blink                             ledChaser
-C:   0000010D  ___sdcc_external_startup           _startup
+C:   00000119  _delay                             ledChaser
+C:   00000156  _blink                             ledChaser
+C:   000001C6  ___sdcc_external_startup           _startup
 
 ASxxxx Linker V03.00/V05.40 + sdld,  page 16.
 
